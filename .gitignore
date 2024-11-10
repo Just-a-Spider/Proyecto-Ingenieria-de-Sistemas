@@ -1,0 +1,10 @@
+# Virtual environment
+venv/
+env/
+node_modules/
+
+# Environment variables
+.env
+
+# Cache
+__pycache__/
