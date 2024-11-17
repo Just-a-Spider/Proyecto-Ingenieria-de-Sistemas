@@ -4,7 +4,7 @@ from werkzeug.exceptions import HTTPException, NotFound, abort
 from app import app, lm, db, bc
 from app.users.models import User
 from app.users.forms import LoginForm, RegisterForm
-
+#views para usuarios
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))
