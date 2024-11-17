@@ -7,3 +7,5 @@ class CreateProductForm(FlaskForm):
     description = TextAreaField('Description', validators=[InputRequired()])
     price = FloatField('Price', validators=[InputRequired()])
     stock = StringField('Stock', validators=[InputRequired()])
+
+#archivos forms
