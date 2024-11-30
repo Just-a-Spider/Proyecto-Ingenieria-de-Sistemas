@@ -50,8 +50,22 @@
       body.loaded > div.preloader {
         animation: hidePreloader 0.5s linear 0.5s forwards;
       }
+      a {
+        text-decoration: none;
+        background-color: transparent;
+      }
     </style>
     <script>
+      // Only load the preoader if the page is not loaded
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () {
+          document.querySelector("body").classList.add("loaded");
+        });
+      } else {
+        document.querySelector("body").classList.add("loaded");
+      }
+
+      
       window.addEventListener("load", function () {
         setTimeout(function () {
           document.querySelector("body").classList.add("loaded");
@@ -62,23 +76,31 @@
     <!-- Favicon -->
     <!-- <link rel="icon" href="/static/assets/img/brand/favicon.png" type="image/png">Font Awesome
     <link rel="stylesheet" href="/static/assets/libs/@fortawesome/fontawesome-free/css/all.min.css"> -->
-    <!-- Tailwind CSS -->
     <link
       rel="stylesheet"
-      href="{{url_for('static', filename='css/main.css')}}"
+      href="{{url_for('static', filename='css/primeflex.min.css')}}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/global.css')}}"
     />
 
     <!-- Specific Page CSS goes HERE  -->
     {% block stylesheets %}{% endblock stylesheets %}
   </head>
-  <body>
+  <body class="m-0 p-0">
+    {% include 'partials/UI/navbar.html' %}
     <!-- Preloader -->
     <div class="preloader">
       <div class="spinner-border text-primary" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </div>
-    {% block content %}{% endblock content %}
+    <div
+      class="flex flex-column gap-2 justify-content-start align-items-center"
+    >
+      {% block content %}{% endblock content %}
+    </div>
 
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}

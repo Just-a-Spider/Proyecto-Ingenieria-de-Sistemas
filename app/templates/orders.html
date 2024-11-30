@@ -1,0 +1,31 @@
+{% extends "layouts/base.html" %} {% block title %} Pedidos {% endblock %} {%
+block stylesheets %}{% endblock stylesheets %} {% block content %}
+<div class="flex flex-row justify-content-center gap-8 align-items-start">
+  <!-- Clients Space -->
+  <div class="flex flex-column gap-2">
+    {% include 'partials/clients_partial.html' %}
+  </div>
+
+  <!-- Orders Space -->
+  <div class="flex flex-column gap-2">
+    {% include 'partials/orders_partial.html' %}
+  </div>
+</div>
+
+<!-- Refund Space -->
+{% if refund != None %}
+<div class="flex flex-column gap-2">
+  {% include 'partials/refund_partial.html' %}
+</div>
+{% endif %} {% endblock content %} {% block javascripts %}
+<script>
+  function toggleRefundForm(uuid) {
+    const refundForm = document.getElementById(`refund-form-${uuid}`);
+    if (refundForm.classList.contains("hidden")) {
+      refundForm.classList.remove("hidden");
+    } else {
+      refundForm.classList.add("hidden");
+    }
+  }
+</script>
+{% endblock javascripts %}

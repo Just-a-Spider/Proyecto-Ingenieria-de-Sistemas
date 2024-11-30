@@ -1,0 +1,61 @@
+<h2 class="text-center text-3xl font-extrabold text-gray-900">Clientes</h2>
+<div
+  class="flex flex-row aligns-items-center justify-content-center gap-8 border-2 border-round p-4"
+>
+  <!-- Clients Table -->
+  <div class="card flex flex-column gap-2">
+    <h3 class="text-center">Lista de Clientes</h3>
+    {% for client in clients %}
+    <dl class="mb-2">
+      <dt>Nombre: {{ client.name }}</dt>
+      <dd>DNI: {{ client.dni }}</dd>
+      <dd>Correo: {{ client.email }}</dd>
+      <dd>Teléfono: {{ client.phone }}</dd>
+    </dl>
+    <div>
+      <form
+        action="{{ url_for('orders.eliminar_cliente', dni=client.dni) }}"
+        method="post"
+        class="w-full mt-2"
+        onsubmit="return confirm('¿Estás seguro de eliminar este producto?');"
+      >
+        <button type="submit" class="p-button-danger w-full">Eliminar</button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Clients Form -->
+  <div class="flex flex-column gap-2">
+    <h3 class="text-center">Crear Nuevo Cliente</h3>
+    <form
+      class="w-full flex flex-column gap-2 align-items-center justify-content-center"
+      action="{{ url_for('orders.clientes') }}"
+      method="POST"
+    >
+      {{ client_form.hidden_tag() }}
+      <div class="flex flex-column gap-0">
+        <label for="dni" class="sr-only">DNI</label>
+        {{ client_form.dni( class_="border-round p-2", placeholder="87654321" )
+        }}
+      </div>
+      <div class="flex flex-column gap-0">
+        <label for="name" class="sr-only">Nombre</label>
+        {{ client_form.name( class_="border-round p-2", placeholder="Cliente " )
+        }}
+      </div>
+      <div class="flex flex-column gap-0">
+        <label for="email" class="sr-only">Correo</label>
+        {{ client_form.email( class_="border-round p-2",
+        placeholder="cliente.nuevo@gmail.com" ) }}
+      </div>
+      <div class="flex flex-column gap-0">
+        <label for="phone" class="sr-only">Teléfono</label>
+        {{ client_form.phone( class_="border-round p-2", placeholder="987654321"
+        ) }}
+      </div>
+      <button type="submit" class="p-button-success mt-3">
+        Registrar Cliente
+      </button>
+    </form>
+  </div>
+</div>
