@@ -1,0 +1,25 @@
+<h2 class="text-center text-3xl font-extrabold text-gray-900">Reembolso</h2>
+<div
+  class="flex flex-row aligns-items-center justify-content-center gap-8 border-2 border-round p-4"
+>
+  <table>
+    <thead>
+      <tr class="">
+        <th class="px-4 py-2">DNI del Cliente</th>
+        <th class="px-4 py-2">Razón</th>
+        <th class="px-4 py-2">Total de Venta</th>
+        <th class="px-4 py-2">Fecha de Venta</th>
+        <th class="px-4 py-2">Fecha de Reembolso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">{{ refund.order.client.dni }}</td>
+        <td class="border px-4 py-2">{{ refund.reason }}</td>
+        <td class="border px-4 py-2">${{ refund.order.total }}</td>
+        <td class="border px-4 py-2">{{ refund.order.order_date }}</td>
+        <td class="border px-4 py-2">{{ refund.created_at }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

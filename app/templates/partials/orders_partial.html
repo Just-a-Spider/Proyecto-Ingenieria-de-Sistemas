@@ -1,0 +1,111 @@
+<h2 class="text-center text-3xl font-extrabold text-gray-900">Pedidos</h2>
+<div
+  class="flex flex-row aligns-items-center justify-content-center gap-8 border-2 border-round p-4"
+>
+  <!-- Clients Table -->
+  <div class="card flex flex-column gap-2">
+    <h3 class="text-center">Lista de Pedidos</h3>
+    <div class="flex flex-column gap-2 overflow-y-auto h-full">
+      {% for order in orders %}
+      <div class="flex flex-row gap-6">
+        <dl class="mb-2">
+          <dt>Cliente: {{ order.client.name }}</dt>
+          <dd>DNI: {{ order.client.dni }}</dd>
+          <dd>Fecha: {{ order.order_date }}</dd>
+          <dd>Método de Pago: {{ order.payment_method }}</dd>
+          <dd>Total: ${{ order.total }}</dd>
+        </dl>
+        <div>
+          <form
+            action="{{ url_for('orders.eliminar_pedido', uuid=order.uuid) }}"
+            method="post"
+            class="w-full mt-2"
+            onsubmit="return confirm('¿Estás seguro de eliminar este producto?');"
+          >
+            <button
+              type="submit"
+              {%
+              if
+              order.refund
+              %}
+              class="p-button-disabled w-full"
+              disabled
+              {%
+              else
+              %}
+              class="p-button-danger w-full"
+              {%
+              endif
+              %}
+            >
+              Eliminar
+            </button>
+          </form>
+          <form
+            action="{{ url_for('orders.pedido', uuid=order.uuid) }}"
+            method="post"
+            class="w-full mt-2"
+          >
+            <button type="submit" class="p-button w-full">Ver Detalles</button>
+          </form>
+          {% if not order.refund %}
+          <button
+            type="button"
+            class="p-button-info w-full mt-2"
+            onclick="toggleRefundForm('{{ order.uuid }}')"
+          >
+            Registrar Reembolso
+          </button>
+          {% else %}
+          <!-- Redirect to the refund passing the order_uuid as a query param -->
+          <a
+            href="{{ url_for('orders.pedidos') }}?order_uuid={{ order.uuid }}"
+            class="c-link w-full mt-2"
+          >
+            Ver Reembolso
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      <div id="refund-form-{{ order.uuid }}" class="hidden mt-2">
+        <form
+          action="{{ url_for('refunds.nuevo_reembolso', uuid=order.uuid) }}"
+          method="post"
+          class="w-full mt-2"
+        >
+          <textarea
+            class="w-full p-2 border-round"
+            name="reason"
+            rows="2"
+            placeholder="Motivo del Reembolso"
+            required
+          ></textarea>
+          <button type="submit" class="p-button-success w-full mt-2">
+            Enviar
+          </button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- Clients Form -->
+  <div class="flex flex-column gap-2">
+    <h3 class="text-center">Crear Nuevo Pedido</h3>
+    <form
+      class="w-full flex flex-column gap-2 align-items-start justify-content-center"
+      action="{{ url_for('orders.pedidos') }}"
+      method="POST"
+    >
+      {{ order_form.hidden_tag() }}
+      <div class="flex flex-column gap-0">
+        <label for="client_dni" class="sr-only">DNI de Cliente</label>
+        {{ order_form.client_dni(class_="w-full") }}
+      </div>
+      <div class="flex flex-column gap-0">
+        <label for="payment_method" class="sr-only">Método de Pago</label>
+        {{ order_form.payment_method(class_="w-full") }}
+      </div>
+      <button type="submit" class="p-button-success">Crear Pedido</button>
+    </form>
+  </div>
+</div>
