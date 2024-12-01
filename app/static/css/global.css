@@ -1,0 +1,197 @@
+/* @import "styles.css"; */
+@import "theme-light.css";
+
+/* Buttons' styles */
+button {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--primary-color-text);
+  border-radius: var(--border-radius);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.p-button {
+  background-color: var(--primary-500);
+}
+
+.p-button:hover {
+  background-color: var(--primary-600);
+}
+
+.p-button-disabled {
+  background-color: var(--surface-400);
+  cursor: not-allowed;
+}
+
+.p-button-danger {
+  background-color: var(--red-500);
+}
+
+.p-button-danger:hover {
+  background-color: var(--red-600);
+}
+
+.p-button-success {
+  background-color: var(--green-500);
+}
+
+.p-button-success:hover {
+  background-color: var(--green-600);
+}
+
+.p-button-warning {
+  background-color: var(--yellow-500);
+}
+
+.p-button-warning:hover {
+  background-color: var(--yellow-600);
+}
+
+.p-button-info {
+  background-color: var(--teal-500);
+}
+
+.p-button-info:hover {
+  background-color: var(--teal-600);
+}
+
+.c-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--teal-500);
+  color: var(--primary-color-text);
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s;
+}
+
+.c-link:hover {
+  background-color: var(--teal-600);
+}
+
+.c-link-danger {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: var(--red-500);
+  color: var(--primary-color-text);
+  text-align: center;
+  text-decoration: none;
+  border-radius: var(--border-radius);
+  transition: background-color 0.3s;
+}
+
+.c-link-danger:hover {
+  background-color: var(--red-600);
+}
+
+/* Inputs' styles */
+input,
+textarea,
+select,
+option {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--text-color);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--green-500);
+  padding: 0.5rem 1rem;
+  background-color: var(--background-color);
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+option:focus {
+  outline: none;
+  border-color: var(--green-600);
+}
+
+/* Cards */
+.card {
+  background-color: var(--surface-100);
+  border-radius: var(--border-radius);
+  padding: var(--content-padding);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: auto;
+  max-height: 50vh;
+}
+
+/* Card Item */
+.card-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--surface-800);
+}
+
+/* Scrollbar styles for WebKit browsers */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height of the scrollbar (for horizontal scrollbars) */
+  margin-left: 0.5rem; /* Space between the scrollbar and the content */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-200); /* Background of the scrollbar track */
+  border-radius: var(--border-radius); /* Rounded corners for the track */
+  margin-left: 0.5rem; /* Space between the scrollbar and the content */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-500); /* Color of the scrollbar thumb */
+  border-radius: var(--border-radius); /* Rounded corners for the thumb */
+  border: 3px solid var(--surface-200); /* Space around the thumb */
+  margin-left: 0.5rem; /* Space between the scrollbar and the content */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(
+    --green-600
+  ); /* Color of the scrollbar thumb on hover */
+}
+
+/* Scrollbar styles for Firefox browsers */
+* {
+  scrollbar-width: thin; /* Width of the scrollbar */
+  scrollbar-color: var(--primary-500) var(--surface-200); /* Color of the scrollbar thumb and track */
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: center;
+}
+
+thead {
+  background-color: var(--surface-200);
+}
+
+th,
+td {
+  padding: 0.5rem;
+  border: 1px solid var(--surface-800);
+
+}
+
+/* Nav */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--surface-600);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Body */
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+  padding: 0;
+}

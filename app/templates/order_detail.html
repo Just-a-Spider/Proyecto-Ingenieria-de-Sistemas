@@ -1,0 +1,87 @@
+{% extends "layouts/base.html" %} {% block title %} Detalle Pedido {% endblock
+%} {% block stylesheets %}{% endblock stylesheets %} {% block content %}
+<div class="flex flex-column gap-2 justify-content-center align-items-center">
+  <h1 class="text-center">Detalle de Pedido</h1>
+  <button
+    class="p-button w-full"
+    onclick="window.location.href='{{ url_for('orders.pedidos') }}'"
+  >
+    Regresar
+  </button>
+  {% if message %}
+  <div class="alert alert-info">{{ message }}</div>
+  {% endif %}
+  <div
+    class="flex flex-row gap-8 justify-content-center align-items-start border-2 border-round p-4"
+  >
+    <div class="w-full">
+      <h3 class="text-center">Datos del Pedido</h3>
+      <dl class="mb-4 w-full">
+        <dt class="text-lg font-medium text-gray-500">Cliente</dt>
+        <dd>Nombre: {{ order.client.name }}</dd>
+        <dd>DNI: {{ order.client.dni }}</dd>
+        <dd>Correo: {{ order.client.email }}</dd>
+        <dd>Teléfono: {{ order.client.phone }}</dd>
+      </dl>
+      <dl class="mb-2 w-full">
+        <dt class="text-lg font-medium text-gray-500">Pedido</dt>
+        <dd>Fecha: {{ order.order_date }}</dd>
+        <dd>Método de Pago: {{ order.payment_method }}</dd>
+        <dd>Total: ${{ order.total }}</dd>
+      </dl>
+    </div>
+
+    <div class="card w-full">
+      <h3 class="text-center">Productos del Pedido</h3>
+      {% for order_detail in order_details %}
+      <dl class="card-item flex flex-column gap-2">
+        <dt>{{ order_detail.product.name }}</dt>
+        <dd>Cantidad: {{ order_detail.quantity }}</dd>
+        <dd>Precio: ${{ order_detail.product.price }}</dd>
+        <dd>Subtotal: ${{ order_detail.subtotal }}</dd>
+        <form
+          action="{{ url_for('orders.eliminar_detalle_pedido', uuid=order.uuid, order_detail_uuid=order_detail.uuid) }}"
+          method="post"
+          class="mt-2"
+          onsubmit="return confirm('¿Estás seguro de eliminar este producto?');"
+        >
+          <button
+            type="submit"
+            class="w-full p-2 bg-red-500 text-white rounded-md hover:bg-red-700 border-round"
+          >
+            Eliminar
+          </button>
+        </form>
+      </dl>
+      {% endfor %}
+    </div>
+
+    <div class="w-full">
+      <h3 class="text-center">Agregar Producto</h3>
+      <form
+        action="{{ url_for('orders.pedido', uuid=order.uuid) }}"
+        method="post"
+        class="flex flex-column gap-2 justify-content-center align-items-start"
+      >
+        {{ order_detail_form.hidden_tag() }}
+        <!-- Hidden field with the order_uuid -->
+        <input type="hidden" name="order_uuid" value="{{ order.uuid }}" />
+        <div class="flex flex-column gap-2">
+          <label for="product_id">Producto</label>
+          {{ order_detail_form.product_id(class_="border-round p-2") }}
+        </div>
+        <div class="flex flex-column gap-2">
+          <label for="quantity">Cantidad</label>
+          {{ order_detail_form.quantity(class_="border-round p-2") }}
+        </div>
+        <button
+          type="submit"
+          class="mt-3 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 border-round w-full"
+        >
+          Agregar Producto
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %} {% block javascripts %}{% endblock javascripts %}

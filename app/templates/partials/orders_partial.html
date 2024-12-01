@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function toggleRefundForm(uuid) {
+            const refundForm = document.getElementById(`refund-form-${uuid}`);
+            refundForm.classList.toggle('hidden');
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+    <div class="container mx-auto px-4">
+        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-8">Pedidos</h2>
+        <div class="flex flex-wrap justify-center gap-8 border-2 border-gray-200 rounded-lg p-6 bg-white shadow-md">
+            <!-- Clients Table -->
+            <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-center text-xl font-semibold text-gray-800 mb-4">Lista de Pedidos</h3>
+                <div class="overflow-y-auto max-h-[600px] space-y-4">
+                    {% for order in orders %}
+                    <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition hover:shadow-lg">
+                        <dl class="mb-4 space-y-2 text-gray-700">
+                            <div>
+                                <dt class="font-bold text-gray-900">Cliente:</dt>
+                                <dd>{{ order.client.name }}</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-gray-900">DNI:</dt>
+                                <dd>{{ order.client.dni }}</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-gray-900">Fecha:</dt>
+                                <dd>{{ order.order_date }}</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-gray-900">Método de Pago:</dt>
+                                <dd>{{ order.payment_method }}</dd>
+                            </div>
+                            <div>
+                                <dt class="font-bold text-gray-900">Total:</dt>
+                                <dd class="font-semibold text-lg text-green-600">${{ order.total }}</dd>
+                            </div>
+                        </dl>
+                        
+                        <div class="grid grid-cols-1 gap-2">
+                            <form
+                                action="{{ url_for('orders.eliminar_pedido', uuid=order.uuid) }}"
+                                method="post"
+                                onsubmit="return confirm('¿Estás seguro de eliminar este producto?');"
+                            >
+                                <button
+                                    type="submit"
+                                    {% if order.refund %}
+                                    class="w-full p-2 bg-gray-300 text-gray-500 rounded-md cursor-not-allowed opacity-50"
+                                    disabled
+                                    {% else %}
+                                    class="w-full p-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                                    {% endif %}
+                                >
+                                    Eliminar
+                                </button>
+                            </form>
+                            
+                            <form action="{{ url_for('orders.pedido', uuid=order.uuid) }}" method="post">
+                                <button type="submit" class="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                                    Ver Detalles
+                                </button>
+                            </form>
+                            
+                            {% if not order.refund %}
+                            <button
+                                type="button"
+                                class="w-full p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
+                                onclick="toggleRefundForm('{{ order.uuid }}')"
+                            >
+                                Registrar Reembolso
+                            </button>
+                            {% else %}
+                            <a
+                                href="{{ url_for('orders.pedidos') }}?order_uuid={{ order.uuid }}"
+                                class="w-full p-2 text-center text-blue-600 hover:bg-blue-50 rounded-md transition"
+                            >
+                                Ver Reembolso
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div id="refund-form-{{ order.uuid }}" class="hidden mt-2">
+                        <form
+                            action="{{ url_for('refunds.nuevo_reembolso', uuid=order.uuid) }}"
+                            method="post"
+                            class="bg-gray-50 p-4 rounded-lg"
+                        >
+                            <textarea
+                                class="w-full p-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                name="reason"
+                                rows="2"
+                                placeholder="Motivo del Reembolso"
+                                required
+                            ></textarea>
+                            <button 
+                                type="submit" 
+                                class="w-full p-2 mt-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                            >
+                                Enviar
+                            </button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <!-- Orders Form -->
+            <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-center text-xl font-semibold text-gray-800 mb-4">Crear Nuevo Pedido</h3>
+                <form
+                    class="w-full flex flex-col gap-4"
+                    action="{{ url_for('orders.pedidos') }}"
+                    method="POST"
+                >
+                    {{ order_form.hidden_tag() }}
+                    <div class="flex flex-col gap-2">
+                        <label for="client_dni" class="sr-only">DNI de Cliente</label>
+                        {{ order_form.client_dni(class_="w-full p-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none") }}
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label for="payment_method" class="sr-only">Método de Pago</label>
+                        {{ order_form.payment_method(class_="w-full p-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none") }}
+                    </div>
+                    <button 
+                        type="submit" 
+                        class="w-full p-2 mt-4 bg-green-600 text-white rounded-md hover:bg-green-700 transition"
+                    >
+                        Crear Pedido
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
