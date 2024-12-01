@@ -1,0 +1,39 @@
+{% extends "layouts/base.html" %} {% block title %} Reembolsos {% endblock %} {%
+block stylesheets %}{% endblock stylesheets %} {% block content %}
+<!-- Clients Space -->
+<h2 class="text-center">Reembolsos</h2>
+<div
+  class="flex flex-row aligns-items-center justify-content-center gap-8 border-2 border-round p-4"
+>
+  {% for refund in refunds %}
+  <table>
+    <thead>
+      <tr class="">
+        <th class="px-4 py-2">DNI del Cliente</th>
+        <th class="px-4 py-2">Razón</th>
+        <th class="px-4 py-2">Total de Venta</th>
+        <th class="px-4 py-2">Fecha de Venta</th>
+        <th class="px-4 py-2">Fecha de Reembolso</th>
+        <th class="px-4 py-2">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="border px-4 py-2">{{ refund.order.client.dni }}</td>
+        <td class="border px-4 py-2">{{ refund.reason }}</td>
+        <td class="border px-4 py-2">${{ refund.order.total }}</td>
+        <td class="border px-4 py-2">{{ refund.order.order_date }}</td>
+        <td class="border px-4 py-2">{{ refund.created_at }}</td>
+        <td>
+          <a
+            href="{{ url_for('orders.pedido', uuid=refund.order.uuid) }}"
+            class="c-link"
+            >Ver Detalles</a
+          >
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endfor %}
+</div>
+{% endblock content %} {% block javascripts %}{% endblock javascripts %}
