@@ -43,7 +43,8 @@ def pedidos():
     )
 
 @orders_bp.route('/pedido/<string:uuid>', methods=['GET', 'POST'])
-def pedido(uuid, refund=False):
+def pedido(uuid):
+    refund = request.args.get('refund', 'false').lower() == 'true'
     order = Order.query.get_or_404(uuid)
     order_detail_form = forms.CreateOrderDetailForm(order_uuid=uuid)
     order_details = OrderDetail.query.filter_by(order_uuid=uuid).all()
@@ -52,7 +53,7 @@ def pedido(uuid, refund=False):
         product = Product.query.get(order_detail_form.product_id.data)
         if product.stock < order_detail_form.quantity.data:
             flash(f'No hay suficiente stock para el producto {product.name}', 'error')
-            return redirect(url_for('orders.pedido', uuid=uuid))
+            return redirect(url_for('orders.pedido', uuid=uuid, refund=refund))
 
         existing_order_detail = OrderDetail.query.filter_by(
             order_uuid=uuid,

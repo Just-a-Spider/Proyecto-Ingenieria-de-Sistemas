@@ -1,7 +1,7 @@
-from flask import render_template, request, url_for, redirect, send_from_directory
-from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.exceptions import HTTPException, NotFound, abort
-from app import lm, db, bc
+from flask import render_template, request, url_for, redirect
+from flask_login import login_user, logout_user
+from werkzeug.exceptions import abort
+from app import lm, bc
 from app.users import users_bp
 from app.users.models import User
 from app.users.forms import LoginForm, RegisterForm
@@ -39,7 +39,7 @@ def register():
                 password=bc.generate_password_hash(password).decode('utf-8')
             )
             new_user.save()
-            return redirect(url_for('login'))
+            return redirect(url_for('users.login'))
     else:
         msg = 'Please fill out the form'
         return render_template('auth/register.html', form=form, msg=msg)

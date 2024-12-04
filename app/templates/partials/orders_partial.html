@@ -22,6 +22,11 @@
                 <div class="overflow-y-auto max-h-[600px] space-y-4">
                     {% for order in orders %}
                     <div class="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition hover:shadow-lg">
+                        {% if order.refund %}
+                        <div class="bg-red-600 text-white text-center font-semibold p-2 rounded-md">
+                            Reembolsado
+                        </div>
+                        {% endif %}
                         <dl class="mb-4 space-y-2 text-gray-700">
                             <div>
                                 <dt class="font-bold text-gray-900">Cliente:</dt>
@@ -64,13 +69,13 @@
                                 </button>
                             </form>
                             
+                            
+                            {% if not order.refund %}
                             <form action="{{ url_for('orders.pedido', uuid=order.uuid) }}" method="post">
                                 <button type="submit" class="w-full p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
                                     Ver Detalles
                                 </button>
                             </form>
-                            
-                            {% if not order.refund %}
                             <button
                                 type="button"
                                 class="w-full p-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition"
@@ -80,7 +85,7 @@
                             </button>
                             {% else %}
                             <a
-                                href="{{ url_for('orders.pedido', uuid=order.uuid) }}"
+                                href="{{ url_for('orders.pedido', uuid=order.uuid, refund=True) }}"
                                 class="w-full p-2 text-center text-blue-600 hover:bg-blue-50 rounded-md transition"
                             >
                                 Ver Reembolso
