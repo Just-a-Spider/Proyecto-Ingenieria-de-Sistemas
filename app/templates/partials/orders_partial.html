@@ -14,7 +14,7 @@
 </head>
 <body class="bg-gray-100 min-h-screen py-8">
     <div class="container mx-auto px-4">
-        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-8">Pedidos</h2>
+        <h2 class="text-center text-3xl font-extrabold text-gray-900 mb-2">Pedidos</h2>
         <div class="flex flex-wrap justify-center gap-8 border-2 border-gray-200 rounded-lg p-6 bg-white shadow-md">
             <!-- Clients Table -->
             <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 bg-white rounded-lg shadow-md p-6">
@@ -80,7 +80,7 @@
                             </button>
                             {% else %}
                             <a
-                                href="{{ url_for('orders.pedidos') }}?order_uuid={{ order.uuid }}"
+                                href="{{ url_for('orders.pedido', uuid=order.uuid) }}"
                                 class="w-full p-2 text-center text-blue-600 hover:bg-blue-50 rounded-md transition"
                             >
                                 Ver Reembolso

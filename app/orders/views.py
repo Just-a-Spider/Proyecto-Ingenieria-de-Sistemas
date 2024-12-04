@@ -43,7 +43,7 @@ def pedidos():
     )
 
 @orders_bp.route('/pedido/<string:uuid>', methods=['GET', 'POST'])
-def pedido(uuid):
+def pedido(uuid, refund=False):
     order = Order.query.get_or_404(uuid)
     order_detail_form = forms.CreateOrderDetailForm(order_uuid=uuid)
     order_details = OrderDetail.query.filter_by(order_uuid=uuid).all()
@@ -74,7 +74,7 @@ def pedido(uuid):
         product.stock -= order_detail_form.quantity.data
         order.total += product.price * order_detail_form.quantity.data
         db.session.commit()
-        return redirect(url_for('orders.pedido', uuid=uuid))
+        return redirect(url_for('orders.pedido', uuid=uuid, refund=refund))
 
     products = Product.query.all()
     clients = Client.query.all()
@@ -85,7 +85,8 @@ def pedido(uuid):
         clients=clients,
         products=products,
         order_details=order_details,
-        order_detail_form=order_detail_form
+        order_detail_form=order_detail_form,
+        refund=refund
     )
 
 @orders_bp.route('/pedido/<string:uuid>/eliminar', methods=['POST'])

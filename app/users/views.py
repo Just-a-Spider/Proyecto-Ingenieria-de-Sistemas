@@ -1,7 +1,8 @@
 from flask import render_template, request, url_for, redirect, send_from_directory
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.exceptions import HTTPException, NotFound, abort
-from app import app, lm, db, bc
+from app import lm, db, bc
+from app.users import users_bp
 from app.users.models import User
 from app.users.forms import LoginForm, RegisterForm
 
@@ -9,7 +10,7 @@ from app.users.forms import LoginForm, RegisterForm
 def load_user(id):
     return User.query.get(int(id))
 
-@app.route('/register', methods=['GET', 'POST'])
+@users_bp.route('/register', methods=['GET', 'POST'])
 def register():
 
     form = RegisterForm(request.form)
@@ -43,7 +44,7 @@ def register():
         msg = 'Please fill out the form'
         return render_template('auth/register.html', form=form, msg=msg)
 
-@app.route('/login', methods=['GET', 'POST'])
+@users_bp.route('/login', methods=['GET', 'POST'])
 def login():
     
     form = LoginForm(request.form)
@@ -55,8 +56,15 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bc.check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('products.products'))
+            return redirect(url_for('products.productos'))
         
         return abort(401)
     
     return render_template('auth/login.html', form=form)
+
+@users_bp.route('/logout', methods=['GET'])
+def logout():
+
+    logout_user()
+    
+    return redirect('/login')

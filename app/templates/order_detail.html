@@ -1,7 +1,11 @@
 {% extends "layouts/base.html" %} {% block title %} Detalle Pedido {% endblock
 %} {% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <div class="flex flex-column gap-2 justify-content-center align-items-center">
+  {% if refund %}
   <h1 class="text-center">Detalle de Pedido</h1>
+  {% else %}
+  <h1 class="text-center">Detalle de Reembolso</h1>
+  {% endif %}
   <button
     class="p-button w-full"
     onclick="window.location.href='{{ url_for('orders.pedidos') }}'"
@@ -48,6 +52,7 @@
           <button
             type="submit"
             class="w-full p-2 bg-red-500 text-white rounded-md hover:bg-red-700 border-round"
+            disabled="{{ refund }}"
           >
             Eliminar
           </button>
@@ -77,6 +82,7 @@
         <button
           type="submit"
           class="mt-3 p-2 bg-blue-500 text-white rounded-md hover:bg-blue-700 border-round w-full"
+          disabled="{{ refund }}"
         >
           Agregar Producto
         </button>

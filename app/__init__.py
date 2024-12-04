@@ -16,6 +16,7 @@ migrate = Migrate(app, db)
 
 lm = LoginManager()
 lm.init_app(app)
+lm.login_view = 'users.login'  # Set the login view for the login_required decorator
 
 # Import blueprints
 from app.users import users_bp
